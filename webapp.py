@@ -137,6 +137,13 @@ def home():
 
 
 if __name__ == "__main__":
+
+    app.run(host='::',port=5000, debug=False, ssl_context=('cert.pem', 'key.pem'))
+     
     #app.run(host='::',port=5000, debug=True)
-    app.run(host='::',port=5000, debug=False)
+#    try:
+#        app.run(host='::',port=5000, debug=False, ssl_context=('cert.pem', 'key.pem')))
+#    except:
+#        app.run(host='::',port=5000, debug=False))
+
 #    app.run(host='0.0.0.0',port=5000, debug=True)
