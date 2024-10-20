@@ -38,4 +38,3 @@ sudo certbot certonly --standalone -d app.domain.net
 - <https://certbot.eff.org/instructions?ws=apache&os=pip>
 - <https://stackoverflow.com/questions/49306970/correct-input-type-for-ip-address>
 - <https://gist.github.com/jonstout/f3eb6cf002ebe610a48ade6b9f948762>
-- 
