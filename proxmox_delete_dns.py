@@ -7,7 +7,7 @@ import yaml
 import json
 
 import requests
-from config.app import url, xapikey
+from config.app import url, key
 
 payload = ""
 headers = {
@@ -20,7 +20,7 @@ def deletedns(record: dict) -> None:
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "insomnia/2023.5.8",
-        "X-API-Key": xapikey
+        "X-API-Key": key
     }
     payload = {"rrsets": [
         {
