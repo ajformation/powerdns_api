@@ -35,11 +35,17 @@ def addrecord(content: dict) -> bool:
 
     #url
 
+    if "delete" in content and content['delete']:
+        changetype = "DELETE"
+    else: 
+        changetype = "REPLACE"
+        content['delete'] = False
+
     payload = {"rrsets": [
             {
                 "name": "%s" % content['name'],
                 "ttl": 3600,
-                "changetype": "REPLACE",
+                "changetype": changetype,
                 "type": "AAAA",
                 "records": [
                     {
@@ -58,7 +64,7 @@ def addrecord(content: dict) -> bool:
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "insomnia/2023.5.8",
-        "X-API-Key": xapikey
+        "X-API-Key": key
     }
     
     #print(url)

@@ -4,7 +4,12 @@
 
 <div class="result">
 
-<img src="https://i.imgflip.com/8on6v7.jpg" alt="ACHIEVEMENT UNLOCKED">
+    {% if content.delete %}
+        <!--<img src="https://imgflip.com/gif/97c96s" alt="YOU KILL DA RECORD">    -->
+        <div style="width:600px;max-width:100%;"><div style="height:0;padding-bottom:56.11%;position:relative;"><iframe width="360" height="202" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameBorder="0" src="https://imgflip.com/embed/97c96s"></iframe></div></div>
+
+    {% else %}
+        <img src="https://i.imgflip.com/8on6v7.jpg" alt="ACHIEVEMENT UNLOCKED">
 
 <p>
     Testez votre nouvel enregistrement
@@ -33,6 +38,7 @@
 <p>
     avec le site <b>whatsmydns.net</b> : <a href="https://www.whatsmydns.net/#AAAA/{{ content.name }} target="_blank">{{ content.name }}</a>
 </p>
+{% endif%}
 
 <img src="https://i.kym-cdn.com/photos/images/original/000/409/799/83b.jpg" alt="Great Success">
 </div>
