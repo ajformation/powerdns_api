@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="result">
+
+<img src="https://i.imgflip.com/8on6v7.jpg" alt="ACHIEVEMENT UNLOCKED">
+
+<p>
+    Testez votre nouvel enregistrement
+</p>
+<p>
+    avec une ligne de commande :
+</p>
+<pre>
+<code>
+    <b>$ dig +short AAAA {{ content.name }}</b>
+    {{ content.ipv6 }}
+
+    <b>$ host {{ content.name }}</b>
+    {{ content.name }} has IPv6 address {{ content.ipv6 }}
+
+    <b>$ resolvectl query {{ content.name }}</b>
+    {{ content.name }}: {{ content.ipv6 }} -- link: whatever
+
+    -- Information acquired via protocol DNS in 34.7ms.
+    -- Data is authenticated: no; Data was acquired via local or encrypted transport: no
+    -- Data from: network
+
+</code>
+</pre>
+<br>
+<p>
+    avec le site <b>whatsmydns.net</b> : <a href="https://www.whatsmydns.net/#AAAA/{{ content.name }} target="_blank">{{ content.name }}</a>
+</p>
+
+<img src="https://i.kym-cdn.com/photos/images/original/000/409/799/83b.jpg" alt="Great Success">
+</div>
+
+{% endblock content %}

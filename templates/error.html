@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="result">
+
+<!-- 
+<p>{{ content.error_cause }}</p>
+-->
+
+
+{% if 'AUTH' == content.error_cause  %}
+
+    <img src="https://i.pinimg.com/474x/f8/64/43/f8644304ae1fe29b4520fe8c58c201a8.jpg" alt="ACCESS DENIED">
+    
+    <p>
+        Vos identifiants pour le compte {{ content.login }} ont un problème !
+    </p>
+    <p><b>Souvenez vous que votre login est "pnom@pve" et non pas "pnom" seul</b></p>
+
+{% endif %}
+
+{% if 'DNS' == content.error_cause %}
+
+    <img src="https://i.imgflip.com/8onb7s.jpg" alt="WRONG DNS">
+
+    <p>
+        Votre enregistrement : 
+    </p>
+    <p>
+        <b> {{ content.name }}  => {{ content.ipv6 }} </b>
+    </p>
+    <p>
+         a un problème !
+    </p>
+    <pre>
+        <code>
+            <b>{{ content.dns_cause }}</b>
+        </code>
+    </pre>
+
+{% endif %}
+<p>
+    Faites vos vérifications.
+</p>
+<img src="https://i.imgflip.com/13v9k7.jpg" alt="sad morty">
+</div>
+
+{% endblock content %}

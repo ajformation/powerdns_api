@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+    <head>
+<title>
+    {% block title %}
+    {% endblock %}
+
+</title>
+
+<!--
+     <link rel="stylesheet" href="styles.css"> 
+                <a href="/result">Resultat</a>
+-->
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+    <body>
+        {% block menu %}
+        <div class="menu no-print">
+            <p>
+                <a href="/">Home</a>
+            </p>
+        </div>
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+
+        {% block foot %}
+        {% endblock %}
+
+    </body>
+</html>
