@@ -5,7 +5,7 @@ locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
 
 from urllib.parse import urlsplit, urljoin
 import yaml
-from config.app import key, url, host
+from config.app import key, url, host, appkey
 
 
 #from quittance import genonedoc
@@ -14,7 +14,7 @@ from flask import render_template, Flask, request, session
 
 app = Flask(__name__)
 
-app.secret_key = key
+app.secret_key = appkey
 
 from proxmoxer import ProxmoxAPI
 
