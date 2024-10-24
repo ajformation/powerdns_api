@@ -15,7 +15,7 @@
     Testez votre nouvel enregistrement
 </p>
 <p>
-    avec une ligne de commande :
+    avec une ligne de commande (dans Linux) :
 </p>
 <pre>
 <code>
@@ -31,6 +31,24 @@
     -- Information acquired via protocol DNS in 34.7ms.
     -- Data is authenticated: no; Data was acquired via local or encrypted transport: no
     -- Data from: network
+
+</code>
+</pre>
+<br>
+<p>
+    avec une ligne de commande (dans PowerShell) :
+</p>
+<pre>
+<code>
+    <b>$ nslookup -q=aaaa {{ content.name }}</b>
+    Server:		8.8.8.8
+    Address:	8.8.8.8#53
+
+    Non-authoritative answer:
+    Name:	{{ content.name }}
+    Address: {{ content.ipv6 }}
+
+    <b>$ Resolve-DnsName -Name {{ content.name }} -Type AAAA</b>
 
 </code>
 </pre>
