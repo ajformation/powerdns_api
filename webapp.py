@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
+import os
 import locale
 locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
 
@@ -131,7 +132,10 @@ def home():
                 #        'debug': request.form['debug'] if 'debug' in request.form else False,
                 #    }
         else:
-            return render_template("./form.html")#, content=content)
+            content = {
+                "url": os.environ['URL']
+            }
+            return render_template("./form.html", content=content)
 
 
 

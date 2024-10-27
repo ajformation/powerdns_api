@@ -13,9 +13,9 @@
     <p class="comment"><b>Pensez bien que votre login est "pnom@pve" et non pas "pnom" seul</b></p>
 
     <label>Nom de l'enregistrement</label>
-    <input name="name" type="text" value="(...)  .web.cfai24.ajformation.fr." >
+    <input name="name" type="text" value="(...)  .{{ content.url }}." >
     <p class="comment">Laisser tout l'enregistrement entier par exemple <br>
-        <b>lorem-ipsum.web.cfai24.ajformation.fr.</b> <br>
+        <b>lorem-ipsum.web.{{ content.url }}.</b> <br>
          (le point final est important)</p>
     <label>ipv6 address</label>
     <input name="ipv6" type="text" pattern="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$">
