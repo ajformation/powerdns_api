@@ -6,8 +6,10 @@ locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
 
 from urllib.parse import urlsplit, urljoin
 import yaml
-from config.app import key, url, host, appkey
+from config.app import key, baseurl, host, appkey
 
+zone = os.environ['URL']
+url = "%s/%s." % (baseurl,zone)
 
 #from quittance import genonedoc
 
