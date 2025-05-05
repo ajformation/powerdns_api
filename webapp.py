@@ -8,6 +8,8 @@ from urllib.parse import urlsplit, urljoin
 import yaml
 from config.app import key, baseurl, host, appkey
 
+import datetime
+
 zone = os.environ['URL']
 url = "%s/%s." % (baseurl,zone)
 
@@ -45,30 +47,31 @@ def addrecord(content: dict) -> bool:
         changetype = "REPLACE"
         content['delete'] = False
 
-        payload = {"rrsets": [
-                                {
-                                    "name": "%s" % content['name'],
-                                    "ttl": 3600,
-                                    "changetype": changetype,
-                                    "type": "AAAA",
-                                    "records": [
-                                        {
-                                            "content": "%s" % content['ipv6'],
-                                            "disabled": False
-                                        }
-                                    ],
-                                    "comments": [
-                                        {
-                                            "content": "%s" % content['login'],
-                                            "account": "%s" % content['login']
-                                        }
-                                    ]
-                                }
-                    ]}
+    payload = {"rrsets": [
+                            {
+                                "name": "%s" % content['name'],
+                                "ttl": 3600,
+                                "changetype": changetype,
+                                "type": "AAAA",
+                                "records": [
+                                    {
+                                        "content": "%s" % content['ipv6'],
+                                        "disabled": False
+                                    }
+                                ],
+                                "comments": [
+                                    {
+                                        "content": "domain %s --- ipv6 %s : action %s" % (content['name'], content['ipv6'], changetype),
+                                        "account": "%s" % content['login'],
+                                        "date": datetime.datetime.now(datetime.timezone.utc).isoformat()
+                                    }
+                                ]
+                            }
+                ]}
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "insomnia/2023.5.8",
-        "X-API-Key": key
+        "X-API-Key": pdnskey
     }
     
     response = requests.request("PATCH", url, json=payload, headers=headers)
