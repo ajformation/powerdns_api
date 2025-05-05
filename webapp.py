@@ -6,7 +6,7 @@ locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
 
 from urllib.parse import urlsplit, urljoin
 import yaml
-from config.app import key, baseurl, host, appkey
+from config.app import pdnskey, baseurl, host, appkey
 
 import datetime
 
@@ -39,15 +39,16 @@ def addrecord(content: dict) -> bool:
     
     import requests
 
-    #url
+    datenow = datetime.datetime.now(datetime.timezone.utc).isoformat()
 
     if "delete" in content and content['delete']:
         changetype = "DELETE"
     else: 
         changetype = "REPLACE"
         content['delete'] = False
-
-    payload = {"rrsets": [
+    
+    payload = {
+                "rrsets": [
                             {
                                 "name": "%s" % content['name'],
                                 "ttl": 3600,
@@ -63,11 +64,13 @@ def addrecord(content: dict) -> bool:
                                     {
                                         "content": "domain %s --- ipv6 %s : action %s" % (content['name'], content['ipv6'], changetype),
                                         "account": "%s" % content['login'],
-                                        "date": datetime.datetime.now(datetime.timezone.utc).isoformat()
+                                        "date": "%s" % datenow
                                     }
                                 ]
                             }
-                ]}
+                ]
+            }
+    
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "insomnia/2023.5.8",
