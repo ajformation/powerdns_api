@@ -10,6 +10,10 @@ from config.app import pdnskey, baseurl, host, appkey
 
 import datetime
 
+if 'ZONE' not in os.environ:
+    raise ValueError("Environment variable 'ZONE' is not set")
+    exit(1)
+
 zone = os.environ['ZONE']
 url = "%s/%s." % (baseurl,zone)
 

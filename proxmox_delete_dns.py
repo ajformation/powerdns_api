@@ -9,6 +9,10 @@ import json
 import requests
 from config.app import baseurl, pdnskey
 
+if 'ZONE' not in os.environ:
+    raise ValueError("Environment variable 'ZONE' is not set")
+    exit(1)
+
 zone = os.environ['ZONE']
 url = "%s/%s." % (baseurl,zone)
 
