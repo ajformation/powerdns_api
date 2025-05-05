@@ -10,12 +10,12 @@ from config.app import pdnskey, baseurl, host, appkey
 
 import datetime
 
-zone = os.environ['URL']
+zone = os.environ['ZONE']
 url = "%s/%s." % (baseurl,zone)
 
 #from quittance import genonedoc
 
-from flask import render_template, Flask, request, session
+from flask import render_template, Flask, request, session # type: ignore
 
 app = Flask(__name__)
 #app.config['DEBUG'] = True
@@ -120,7 +120,7 @@ def home():
 
         else:
             content = {
-                "url": os.environ['URL']
+                "zone": os.environ['ZONE']
             }
             return render_template("./form.html", content=content)
 
