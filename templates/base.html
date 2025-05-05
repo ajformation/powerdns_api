@@ -6,12 +6,15 @@
     {% endblock %}
 
 </title>
-
+    {% block script %}
+    {% endblock %}
 <!--
      <link rel="stylesheet" href="styles.css"> 
                 <a href="/result">Resultat</a>
 -->
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% endblock %}
 
 </head>
     <body>

@@ -1,8 +1,29 @@
 {% extends "base.html" %}
 
+{% block title %}
+    Enregistrement AAAA DONE !
+{% endblock %}
+
+{% block script %}
+<!--
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.5/lib/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.5/lib/addons/p5.sound.min.js"></script>
+    <script src="{{ url_for('static', filename='mySketch.js') }}"></script>
+-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--
+Fireworks JS : https://fireworks.js.org / https://github.com/crashmax-dev/fireworks-js
+    # can't make it work 
+-->
+
+
+{% endblock %}
+
 {% block content %}
 
 <div class="result">
+
+    <canvas id="fireworks"></canvas>
 
     {% if content.delete %}
         <!--<img src="https://imgflip.com/gif/97c96s" alt="YOU KILL DA RECORD">    -->
@@ -60,5 +81,7 @@
 
 <img src="https://i.kym-cdn.com/photos/images/original/000/409/799/83b.jpg" alt="Great Success">
 </div>
+
+<script src="{{ url_for('static', filename='fireworks.js') }}"></script>
 
 {% endblock content %}
