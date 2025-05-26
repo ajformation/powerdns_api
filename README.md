@@ -29,7 +29,7 @@ $ docker run \
         --env ZONE=example.net \
         --env PORT=6667 \
         -v ./config/:/app/config/ \
-        -p 6667 \
+        -p 6667:6667 \
         djayroma/powerdns_api:latest
 ```
 
