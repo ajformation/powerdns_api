@@ -14,8 +14,22 @@ import curlify
 if 'ZONE' not in os.environ:
     raise ValueError("Environment variable 'ZONE' is not set")
     exit(1)
+if 'PORT' not in os.environ:
+    raise ValueError("Environment variable 'PORT' is not set")
+    exit(1)
+
+if 'DEBUG' not in os.environ:
+    os.environ['DEBUG'] = 'False'
+else:
+    if os.environ['DEBUG'] == 'True':
+        os.environ['DEBUG'] = 'True'
+    else:
+        os.environ['DEBUG'] = 'False'
 
 zone = os.environ['ZONE']
+port = os.environ['PORT']
+debug = os.environ['DEBUG']
+
 url = "%s/%s." % (baseurl,zone)
 
 #from quittance import genonedoc
@@ -191,10 +205,10 @@ def home():
 
 if __name__ == "__main__":
 
-    debug = False
+    # debug = False
     # debug = True
 
     if os.path.exists("cert.pem") and os.path.exists("key.pem"):
-        app.run(host='::',port=5000, debug=debug, ssl_context=('cert.pem', 'key.pem'))
+        app.run(host='::',port=port, debug=debug, ssl_context=('cert.pem', 'key.pem'))
     else:
-        app.run(host='::',port=5000, debug=debug)
+        app.run(host='::',port=port, debug=debug)

@@ -22,6 +22,30 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
+## Docker
+
+```shell
+$ docker run \
+        --env ZONE=example.net \
+        --env PORT=6667 \
+        -v ./config/:/app/config/ \
+        -p 6667 \
+        djayroma/powerdns_api:latest
+```
+
+With Certificates :
+
+```shell
+$ docker run \
+        --env ZONE=example.net \
+        --env PORT=6667 \
+        -v ./config/:/app/config/ \
+        -v ./mycert.pem:/app/cert.pem \
+        -v ./mykey.pem:/app/key.pem \
+        -p 6667 \
+        djayroma/powerdns_api:latest
+```
+
 ## Certificat
 
 ### Récupérer un certificat avec certbot

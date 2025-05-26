@@ -37,4 +37,5 @@ USER appuser
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 #CMD ["python", "webapp.py"]
 # gunicorn --bind "[::]:5000" --reload webapp:app
-CMD ["gunicorn", "--bind", "[::]:${PORT}", "--reload", "webapp:app"]
+CMD ["/bin/sh", "-c", "gunicorn --bind [::]:${PORT} --reload webapp:app"]
+#CMD gunicorn --bind "[::]":${PORT} --reload webapp:app
