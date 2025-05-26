@@ -9,6 +9,7 @@ import yaml
 from config.app import pdnskey, baseurl, host, appkey
 
 import datetime
+import curlify
 
 if 'ZONE' not in os.environ:
     raise ValueError("Environment variable 'ZONE' is not set")
@@ -35,7 +36,8 @@ def proxauth(content: dict) -> bool:
         return True
 
     except Exception as e:
-        print("Can't login \n\t%s" % e)
+        app.logger.error("Proxmox authentication failed: %s" % e)
+        #print("Can't login \n\t%s" % e)
         return False
 
 
@@ -51,29 +53,81 @@ def addrecord(content: dict) -> bool:
         changetype = "REPLACE"
         content['delete'] = False
     
-    payload = {
-                "rrsets": [
-                            {
-                                "name": "%s" % content['name'],
-                                "ttl": 3600,
-                                "changetype": changetype,
-                                "type": "AAAA",
-                                "records": [
-                                    {
-                                        "content": "%s" % content['ipv6'],
-                                        "disabled": False
-                                    }
-                                ],
-                                "comments": [
-                                    {
-                                        "content": "domain %s --- ipv6 %s : action %s" % (content['name'], content['ipv6'], changetype),
-                                        "account": "%s" % content['login'],
-                                        "date": "%s" % datenow
-                                    }
-                                ]
-                            }
+    
+    content['txt'] = '"%s -- %s"' % (content['login'],datenow)
+    rrsets = []
+
+    rrsets.append(
+            {
+                "name": "%s" % content['name'],
+                "ttl": 3600,
+                "changetype": changetype,
+                "type": "TXT",
+                "records": [
+                    {
+                        "content": content['txt'],
+                        "disabled": False
+                    }
+                ],
+                "comments": [
+                    {
+                        "content": "domain %s --- user %s" % (content['name'], content['login']),
+                        "account": "%s" % content['login'],
+                        "date": "%s" % datenow
+                    }
                 ]
             }
+    )
+    
+    if 'ipv4' in content and content['ipv4']:
+
+        rrsets.append(
+            {
+                "name": "%s" % content['name'],
+                "ttl": 3600,
+                "changetype": changetype,
+                "type": "A",
+                "records": [
+                    {
+                        "content": "%s" % content['ipv4'],
+                        "disabled": False
+                    }
+                ],
+                "comments": [
+                    {
+                        "content": "domain %s --- ipv4 %s : action %s" % (content['name'], content['ipv6'], changetype),
+                        "account": "%s" % content['login'],
+                        "date": "%s" % datenow
+                    }
+                ]
+            }
+        )
+
+    if 'ipv6' in content and content['ipv6']:
+
+        rrsets.append(
+            {
+                "name": "%s" % content['name'],
+                "ttl": 3600,
+                "changetype": changetype,
+                "type": "AAAA",
+                "records": [
+                    {
+                        "content": "%s" % content['ipv6'],
+                        "disabled": False
+                    }
+                ],
+                "comments": [
+                    {
+                        "content": "domain %s --- ipv6 %s : action %s" % (content['name'], content['ipv6'], changetype),
+                        "account": "%s" % content['login'],
+                        "date": "%s" % datenow
+                    }
+                ]
+            }
+        )
+
+    payload = { "rrsets": rrsets }
     
     headers = {
         "Content-Type": "application/json",
@@ -82,9 +136,11 @@ def addrecord(content: dict) -> bool:
     }
     
     response = requests.request("PATCH", url, json=payload, headers=headers)
+    app.logger.info('Curl request : %s ' % curlify.to_curl(response.request))
 
-    print("Status code : ***%s***" % response.status_code)
-    print(response.text)
+    app.logger.info("Status code : ***%s***" % response.status_code)
+    app.logger.info("Response : ***%s***" % response.text)
+
 
     if response.status_code in [204,201] :
 
@@ -108,8 +164,10 @@ def home():
                     if proxauth(content=content):
 
                         response,result=addrecord(content=content)
-
-                        print("%s :: %s " % (response,result))
+                        
+                        app.logger.info("Response : %s" % response)
+                        app.logger.info("Result : %s" % result)
+                        
                         if result:
                             return render_template("./done.html", content=content)
                         else:
@@ -133,7 +191,10 @@ def home():
 
 if __name__ == "__main__":
 
+    debug = False
+    # debug = True
+
     if os.path.exists("cert.pem") and os.path.exists("key.pem"):
-        app.run(host='::',port=5000, debug=False, ssl_context=('cert.pem', 'key.pem'))
+        app.run(host='::',port=5000, debug=debug, ssl_context=('cert.pem', 'key.pem'))
     else:
-        app.run(host='::',port=5000, debug=False)
+        app.run(host='::',port=5000, debug=debug)

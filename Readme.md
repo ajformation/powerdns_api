@@ -23,11 +23,20 @@ WantedBy=multi-user.target
 
 ## Certificat
 
-Récupérer un certificat avec certbot
+### Récupérer un certificat avec certbot
 
 ```shell
 sudo apt install certbot
 sudo certbot certonly --standalone -d app.domain.net
+```
+
+### Générer un certificat snakeoil
+
+```shell
+openssl req  -nodes -new -x509  \
+    -keyout key.pem \
+    -out cert.pem \
+    -subj "/C=FR/ST=FR/L=City/O=company/OU=Com/CN=localhost"
 ```
 
 ## Liens
