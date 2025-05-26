@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Enregistrement AAAA DONE !
+    Enregistrement {{ content.name }} DONE !
 {% endblock %}
 
 {% block script %}
@@ -40,14 +40,24 @@ Fireworks JS : https://fireworks.js.org / https://github.com/crashmax-dev/firewo
 </p>
 <pre>
 <code>
-    <b>$ dig +short AAAA {{ content.name }}</b>
-    {{ content.ipv6 }}
+    <b>$ dig +short TXT  {{ content.name }}</b>
+    {{ content.txt }}
 
+    {% if content.ipv6 %}
+    <b>$ dig +short AAAA  {{ content.name }}</b>
+    {{ content.ipv6 }}
+    {% endif %}
+    {% if content.ipv4 %}
+    <b>$ dig +short {{ content.name }}</b>
+    {{ content.ipv4 }}
+    {% endif %}
     <b>$ host {{ content.name }}</b>
-    {{ content.name }} has IPv6 address {{ content.ipv6 }}
+    {% if content.ipv6 %}{{ content.name }} has IPv6 address {{ content.ipv6 }}{% endif %}
+    {% if content.ipv4 %}{{ content.name }} has address {{ content.ipv4 }}{% endif %}
 
     <b>$ resolvectl query {{ content.name }}</b>
-    {{ content.name }}: {{ content.ipv6 }} -- link: whatever
+    {{ content.name }}: {% if content.ipv6 %}{{ content.ipv6 }}{% else %}{{ content.ipv4 }}{% endif %} -- link: whatever
+    {% if content.ipv6 and content.ipv4 %}{{ " " * content.name | length }}  {{ content.ipv4 }} -- link: whatever{% endif %}
 
     -- Information acquired via protocol DNS in 34.7ms.
     -- Data is authenticated: no; Data was acquired via local or encrypted transport: no
@@ -61,21 +71,27 @@ Fireworks JS : https://fireworks.js.org / https://github.com/crashmax-dev/firewo
 </p>
 <pre>
 <code>
-    <b>$ nslookup -q=aaaa {{ content.name }}</b>
-    Server:		8.8.8.8
-    Address:	8.8.8.8#53
+    <b>$ nslookup {{ content.name }} 8.8.8.8</b>
+    Server:		dns.google
+    Address:	8.8.8.8
 
     Non-authoritative answer:
     Name:	{{ content.name }}
-    Address: {{ content.ipv6 }}
+    Address: {% if content.ipv6 %}{{ content.ipv6 }}{% else %}{{ content.ipv4 }}{% endif %}
+    {% if content.ipv6 %}{{ " " * content.ipv4 | length }} {{ content.ipv4 }}{% endif %}
 
-    <b>$ Resolve-DnsName -Name {{ content.name }} -Type AAAA</b>
+    <b>$ Resolve-DnsName -Name {{ content.name }}</b>
+
+    Name                                           Type   TTL   Section    IPAddress                                
+    ----                                           ----   ---   -------    ---------                                
+    {% if content.ipv6 %}{{ content.name }}        AAAA   2432  Answer     {{ content.ipv6 }}{% endif %}
+    {% if content.ipv4 %}{{ content.name }}        A      1359  Answer     {{ content.ipv4 }}{% endif %}
 
 </code>
 </pre>
 <br>
 <p>
-    avec le site <b>whatsmydns.net</b> : <a href="https://www.whatsmydns.net/#AAAA/{{ content.name[:-1]  }}" target="_blank">{{ content.name }}</a>
+    avec le site <b>whatsmydns.net</b> : <a href="https://www.whatsmydns.net/#{{ content.record_type }}/{{ content.name[:-1]  }}" target="_blank">{{ content.name }}</a>
 </p>
 {% endif%}
 
