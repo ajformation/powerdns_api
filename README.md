@@ -64,6 +64,38 @@ openssl req  -nodes -new -x509  \
     -subj "/C=FR/ST=FR/L=City/O=company/OU=Com/CN=localhost"
 ```
 
+### Dehydrated
+
+```shell
+url=https://github.com/dehydrated-io/dehydrated/archive/master.tar.gz
+mkdir /srv/dehydrated
+chown www-data:www-data /srv/dehydrated
+wget -P /srv $url
+cd /srv
+tar xf $(basename $url)
+cat > /etc/nginx/sites-enabled/default <<EOF
+
+        location ^~ /.well-known/acme-challenge {
+                alias /srv/dehydrated;
+        }
+EOF
+vim /etc/nginx/sites-enabled/default
+systemctl restart nginx
+cd /srv/dehydrated-master
+./dehydrated --register --accept-terms
+
+```
+
+### ACME.sh
+
+```shell
+su - homer
+MAIL=homer@example.org
+curl https://get.acme.sh | sh -s email=${MAIL}
+acme.sh --install-cert --domain donut.example.net --reloadcmd 'sudo systemctl restart powerdnsapi' --key-file <path>/key.pem --fullchain-file <path>/cert.pem --webroot /srv/acme
+
+```
+
 ## Liens
 
 - <https://zhangtemplar.github.io/flask/>
