@@ -1,9 +1,12 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 # encoding: utf-8
 
-import re, os
-#import argsparse
-import yaml
+import re
+import os
+
+# import argsparse
+# import yaml
+
 import json
 
 import requests
@@ -14,13 +17,14 @@ if 'ZONE' not in os.environ:
     exit(1)
 
 zone = os.environ['ZONE']
-url = "%s/%s." % (baseurl,zone)
+url = "%s/%s." % (baseurl, zone)
 
 payload = ""
 headers = {
     "User-Agent": "insomnia/2023.5.8",
     "X-API-Key": pdnskey
 }
+
 
 def deletedns(record: dict) -> None:
 
@@ -48,7 +52,12 @@ data = json.loads(response.text)
 
 for record in data['rrsets']:
 
-    if re.search(r'-[debian|rocky]',record['name']) and not re.search(r'javond',record['name']):
+    get_dist = re.search(r'-[debian|rocky]', record['name'])
+    get_user = re.search(r'javond', record['name'])
+    get_web = re.search(r'\.web\.', record['name'])
+
+    if get_dist and not get_user:
         deletedns(record)
-    if re.search(r'\.web\.',record['name']) and not re.search(r'javond',record['name']):
+
+    if get_web and not get_user:
         deletedns(record)

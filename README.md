@@ -9,11 +9,13 @@ After=network.target
 
 [Service]
 User=jerome
+Environment=ZONE=example.net \
+Environment=PORT=6667 \
 WorkingDirectory=/home/user/powerdns_api
 ExecStart=/home/user/powerdns_api/.venv/bin/gunicorn \
                 --certfile cert.pem \
                 --keyfile key.pem \
-                --bind [::]:5000 \
+                --bind [::]:6667 \
                 --reload  \
                 webapp:app
 Restart=always
